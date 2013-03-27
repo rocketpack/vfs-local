@@ -108,7 +108,7 @@ module.exports = function setup(fsOptions) {
     // This helper function doesn't follow node conventions in the callback,
     // there is no err, only entry.
     function createStatEntry(file, fullpath, callback) {
-        fs.lstat(fullpath, function (err, stat) {
+        fs.stat(fullpath, function (err, stat) {
             var entry = {
                 name: file
             };
