@@ -6,14 +6,15 @@
     ],
     "name": "vfs-local",
     "description": "A vfs implementation that works on the local filesystem.",
-    "version": "0.3.11",
+    "version": "0.4.0rp",
     "repository": {
         "type": "git",
         "url": "git://github.com/c9/vfs-local.git"
     },
     "main": "localfs.js",
     "dependencies": {
-        "simple-mime": "~0.0.7"
+        "simple-mime": "~0.0.7",
+        "glob": "~3.2.1"
     },
     "devDependencies": {
         "chai": "~1.2.0",

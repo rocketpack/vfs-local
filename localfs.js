@@ -9,6 +9,7 @@ var basename = require('path').basename;
 var Stream = require('stream').Stream;
 var getMime = require('simple-mime')("application/octet-stream");
 var vm = require('vm');
+var _glob = require('glob');
 
 module.exports = function setup(fsOptions) {
 
@@ -48,6 +49,7 @@ module.exports = function setup(fsOptions) {
         rename: rename,
         copy: copy,
         symlink: symlink,
+        glob: glob,
 
         // Wrapper around fs.watch or fs.watchFile
         watch: watch,
@@ -58,11 +60,6 @@ module.exports = function setup(fsOptions) {
         // Process Management
         spawn: spawn,
         execFile: execFile,
-
-        // Basic async event emitter style API
-        on: on,
-        off: off,
-        emit: emit,
 
         // Extending the API
         extend: extend,
@@ -196,6 +193,10 @@ module.exports = function setup(fsOptions) {
                 callback(null, entry);
             });
         });
+    }
+
+    function glob(pattern, callback) {
+        _glob(pattern, { root: base }, callback)
     }
 
     function readfile(path, options, callback) {
@@ -524,14 +525,14 @@ module.exports = function setup(fsOptions) {
         resolvePath(path, function (err, path) {
             if (err) return callback(err);
             if (options.file) {
-                meta.watcher = fs.watchFile(path, options, function () {});
-                meta.watcher.close = function () {
+                meta.emitter = fs.watchFile(path, options, function () {});
+                meta.emitter.close = function () {
                     fs.unwatchFile(path);
                 };
             }
             else {
                 try {
-                    meta.watcher = fs.watch(path, options, function () {});
+                    meta.emitter = fs.watch(path, options, function () {});
                 } catch (e) {
                     return callback(e);
                 }
@@ -611,33 +612,6 @@ module.exports = function setup(fsOptions) {
                 stderr: stderr
             });
         });
-    }
-
-    function on(name, handler, callback) {
-        if (!handlers[name]) handlers[name] = [];
-        handlers[name].push(handler);
-        callback && callback();
-    }
-
-    function off(name, handler, callback) {
-        var list = handlers[name];
-        if (list) {
-            var index = list.indexOf(handler);
-            if (index >= 0) {
-                list.splice(index, 1);
-            }
-        }
-        callback && callback();
-    }
-
-    function emit(name, value, callback) {
-        var list = handlers[name];
-        if (list) {
-            for (var i = 0, l = list.length; i < l; i++) {
-                list[i](value);
-            }
-        }
-        callback && callback();
     }
 
     function extend(name, options, callback) {
