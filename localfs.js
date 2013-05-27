@@ -196,7 +196,11 @@ module.exports = function setup(fsOptions) {
     }
 
     function glob(pattern, callback) {
-        _glob(pattern, { root: base }, callback)
+        _glob(pattern, {
+            root: base,
+            cwd: base,
+            nomount: true
+        }, callback)
     }
 
     function readfile(path, options, callback) {
