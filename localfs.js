@@ -196,7 +196,7 @@ module.exports = function setup(fsOptions) {
     }
 
     function glob(pattern, callback) {
-        _glob(pattern, {
+        _glob(pattern.replace(/^\//, ''), {
             root: base,
             cwd: base,
             nomount: true
