@@ -6,7 +6,7 @@
     ],
     "name": "vfs-local",
     "description": "A vfs implementation that works on the local filesystem.",
-    "version": "0.4.2rp",
+    "version": "0.4.3rp",
     "repository": {
         "type": "git",
         "url": "git://github.com/c9/vfs-local.git"
@@ -14,7 +14,7 @@
     "main": "localfs.js",
     "dependencies": {
         "simple-mime": "~0.0.7",
-        "glob": "~3.2.1"
+        "glob": "https://github.com/rocketpack/node-glob/archive/fix-absolute-paths-on-windows.tar.gz"
     },
     "devDependencies": {
         "chai": "~1.2.0",
